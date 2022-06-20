@@ -48,7 +48,7 @@ ASDISPLAYNODE_INLINE AS_WARN_UNUSED_RESULT BOOL ASLayoutIsDisplayNodeType(ASLayo
   return layout.type == ASLayoutElementTypeDisplayNode;
 }
 
-@interface ASLayout () <ASDescriptionProvider>
+@interface ASLayout ()
 {
   ASLayoutElementType _layoutElementType;
   std::atomic_bool _retainSublayoutElements;
@@ -317,46 +317,6 @@ static std::atomic_bool static_retainsSublayoutLayoutElements = ATOMIC_VAR_INIT(
   subnodeFrame.size = adjustedSize;
   
   return subnodeFrame;
-}
-
-#pragma mark - Description
-
-- (NSMutableArray <NSDictionary *> *)propertiesForDescription
-{
-  NSMutableArray *result = [NSMutableArray array];
-  [result addObject:@{ @"size" : [NSValue valueWithCGSize:self.size] }];
-
-  if (id<ASLayoutElement> layoutElement = self.layoutElement) {
-    [result addObject:@{ @"layoutElement" : layoutElement }];
-  }
-
-  const auto pos = self.position;
-  if (!ASPointIsNull(pos)) {
-    [result addObject:@{ @"position" : [NSValue valueWithCGPoint:pos] }];
-  }
-  return result;
-}
-
-- (NSString *)description
-{
-  return ASObjectDescriptionMake(self, [self propertiesForDescription]);
-}
-
-- (NSString *)recursiveDescription
-{
-  return [self _recursiveDescriptionForLayout:self level:0];
-}
-
-- (NSString *)_recursiveDescriptionForLayout:(ASLayout *)layout level:(NSUInteger)level
-{
-  NSMutableString *description = [NSMutableString string];
-  [description appendString:descriptionIndents(level)];
-  [description appendString:[layout description]];
-  for (ASLayout *sublayout in layout.sublayouts) {
-    [description appendString:@"\n"];
-    [description appendString:[self _recursiveDescriptionForLayout:sublayout level:level + 1]];
-  }
-  return description;
 }
 
 @end

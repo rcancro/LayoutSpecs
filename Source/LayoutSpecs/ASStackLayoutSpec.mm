@@ -175,21 +175,4 @@
   }
 }
 
-- (NSMutableArray<NSDictionary *> *)propertiesForDescription
-{
-  auto result = [super propertiesForDescription];
-
-  // Add our direction
-  switch (self.direction) {
-    case ASStackLayoutDirectionVertical:
-      [result insertObject:@{ (id)kCFNull: @"vertical" } atIndex:0];
-      break;
-    case ASStackLayoutDirectionHorizontal:
-      [result insertObject:@{ (id)kCFNull: @"horizontal" } atIndex:0];
-      break;
-  }
-
-  return result;
-}
-
 @end

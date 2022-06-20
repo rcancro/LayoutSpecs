@@ -9,10 +9,9 @@
 
 #pragma once
 
-#import <AsyncDisplayKit/ASLayoutElement.h>
-#import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
+#import "ASLayoutElement.h"
 
-@interface ASLayoutElementStyle () <ASDescriptionProvider>
+@interface ASLayoutElementStyle ()
 
 /**
  * @abstract The object that acts as the delegate of the style.
