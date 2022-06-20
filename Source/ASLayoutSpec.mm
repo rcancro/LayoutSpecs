@@ -237,23 +237,6 @@ ASLayoutElementStyleExtensibilityForwarding
   }
 }
 
-#pragma mark - ASLayoutElementAsciiArtProtocol
-
-- (NSString *)asciiArtString
-{
-  NSArray *children = self.children.count < 2 && self.child ? @[self.child] : self.children;
-  return [ASLayoutSpec asciiArtStringForChildren:children parentName:[self asciiArtName]];
-}
-
-- (NSString *)asciiArtName
-{
-  NSMutableString *result = [NSMutableString stringWithCString:object_getClassName(self) encoding:NSASCIIStringEncoding];
-  if (_debugName) {
-    [result appendFormat:@" (%@)", _debugName];
-  }
-  return result;
-}
-
 ASSynthesizeLockingMethodsWithMutex(__instanceLock__)
 
 @end
@@ -309,34 +292,6 @@ ASSynthesizeLockingMethodsWithMutex(__instanceLock__)
   }
   const auto sublayouts = [NSArray<ASLayout *> arrayByTransferring:rawSublayouts count:i];
   return [ASLayout layoutWithLayoutElement:self size:size sublayouts:sublayouts];
-}
-
-@end
-
-#pragma mark - ASLayoutSpec (Debugging)
-
-@implementation ASLayoutSpec (Debugging)
-
-#pragma mark - ASCII Art Helpers
-
-+ (NSString *)asciiArtStringForChildren:(NSArray *)children parentName:(NSString *)parentName direction:(ASStackLayoutDirection)direction
-{
-  NSMutableArray *childStrings = [NSMutableArray array];
-  for (id<ASLayoutElementAsciiArtProtocol> layoutChild in children) {
-    NSString *childString = [layoutChild asciiArtString];
-    if (childString) {
-      [childStrings addObject:childString];
-    }
-  }
-  if (direction == ASStackLayoutDirectionHorizontal) {
-    return [ASAsciiArtBoxCreator horizontalBoxStringForChildren:childStrings parent:parentName];
-  }
-  return [ASAsciiArtBoxCreator verticalBoxStringForChildren:childStrings parent:parentName];
-}
-
-+ (NSString *)asciiArtStringForChildren:(NSArray *)children parentName:(NSString *)parentName
-{
-  return [self asciiArtStringForChildren:children parentName:parentName direction:ASStackLayoutDirectionHorizontal];
 }
 
 @end

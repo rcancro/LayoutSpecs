@@ -8,7 +8,6 @@
 //
 
 #import <AsyncDisplayKit/ASLayoutElement.h>
-#import <AsyncDisplayKit/ASAsciiArtBoxCreator.h>
 #import <AsyncDisplayKit/ASLocking.h>
 #import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
 
@@ -85,15 +84,6 @@ NS_ASSUME_NONNULL_BEGIN
  * Init not available for ASWrapperLayoutSpec
  */
 - (instancetype)init NS_UNAVAILABLE;
-
-@end
-
-@interface ASLayoutSpec (Debugging) <ASDebugNameProvider>
-/**
- *  Used by other layout specs to create ascii art debug strings
- */
-+ (NSString *)asciiArtStringForChildren:(NSArray *)children parentName:(NSString *)parentName direction:(ASStackLayoutDirection)direction;
-+ (NSString *)asciiArtStringForChildren:(NSArray *)children parentName:(NSString *)parentName;
 
 @end
 

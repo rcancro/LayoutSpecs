@@ -87,16 +87,3 @@
 }
 
 @end
-
-#pragma mark - ASRatioLayoutSpec (Debugging)
-
-@implementation ASRatioLayoutSpec (Debugging)
-
-#pragma mark - ASLayoutElementAsciiArtProtocol
-
-- (NSString *)asciiArtName
-{
-  return [NSString stringWithFormat:@"%@ (%.1f)", NSStringFromClass([self class]), self.ratio];
-}
-
-@end
