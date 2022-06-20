@@ -12,6 +12,13 @@
 #define ASDK_EXTERN FOUNDATION_EXTERN
 #define unowned __unsafe_unretained
 
+#ifdef __GNUC__
+# define ASDISPLAYNODE_GNUC(major, minor) \
+(__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+#else
+# define ASDISPLAYNODE_GNUC(major, minor) 0
+#endif
+
 #ifndef ASDISPLAYNODE_INLINE
 # if defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #  define ASDISPLAYNODE_INLINE static inline
