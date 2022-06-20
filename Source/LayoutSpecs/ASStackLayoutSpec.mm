@@ -7,17 +7,16 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <AsyncDisplayKit/ASStackLayoutSpec.h>
+#import "ASStackLayoutSpec.h"
 
 #import <numeric>
 #import <vector>
 
-#import <AsyncDisplayKit/ASCollections.h>
-#import <AsyncDisplayKit/ASLayout.h>
-#import <AsyncDisplayKit/ASLayoutElementStylePrivate.h>
-#import <AsyncDisplayKit/ASLayoutSpecUtilities.h>
-#import <AsyncDisplayKit/ASLog.h>
-#import <AsyncDisplayKit/ASStackPositionedLayout.h>
+#import "ASCollections.h"
+#import "ASLayout.h"
+#import "ASLayoutElementStylePrivate.h"
+#import "ASLayoutSpecUtilities.h"
+#import "ASStackPositionedLayout.h"
 
 @implementation ASStackLayoutSpec
 
@@ -131,8 +130,6 @@
     return [ASLayout layoutWithLayoutElement:self size:constrainedSize.min];
   }
  
-  as_activity_scope_verbose(as_activity_create("Calculate stack layout", AS_ACTIVITY_CURRENT, OS_ACTIVITY_FLAG_DEFAULT));
-  as_log_verbose(ASLayoutLog(), "Stack layout %@", self);
   // Accessing the style and size property is pretty costly we create layout spec children we use to figure
   // out the layout for each child
   const auto stackChildren = AS::map(children, [&](const id<ASLayoutElement> child) -> ASStackLayoutSpecChild {

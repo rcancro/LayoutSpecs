@@ -7,7 +7,7 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <AsyncDisplayKit/ASLayoutSpec.h>
+#import "ASLayoutSpec.h"
 #import <AsyncDisplayKit/ASLayoutSpecPrivate.h>
 
 #import <AsyncDisplayKit/ASLayoutSpec+Subclasses.h>
@@ -20,7 +20,6 @@
 
 // Dynamic properties for ASLayoutElements
 @dynamic layoutElementType;
-@synthesize debugName = _debugName;
 
 #pragma mark - Lifecycle
 
@@ -156,24 +155,6 @@ ASLayoutElementLayoutCalculationDefaults
 
 ASLayoutElementStyleExtensibilityForwarding
 
-#pragma mark - ASDescriptionProvider
-
-- (NSMutableArray<NSDictionary *> *)propertiesForDescription
-{
-  const auto result = [NSMutableArray<NSDictionary *> array];
-  if (NSArray *children = self.children) {
-    // Use tiny descriptions because these trees can get nested very deep.
-    const auto tinyDescriptions = ASArrayByFlatMapping(children, id object, ASObjectDescriptionMakeTiny(object));
-    [result addObject:@{ @"children": tinyDescriptions }];
-  }
-  return result;
-}
-
-- (NSString *)description
-{
-  return ASObjectDescriptionMake(self, [self propertiesForDescription]);
-}
-
 #pragma mark - Framework Private
 
 #if AS_DEDUPE_LAYOUT_SPEC_TREE
@@ -220,22 +201,6 @@ ASLayoutElementStyleExtensibilityForwarding
   }
 }
 #endif
-
-#pragma mark - Debugging
-
-- (NSString *)debugName
-{
-  AS::MutexLocker l(__instanceLock__);
-  return _debugName;
-}
-
-- (void)setDebugName:(NSString *)debugName
-{
-  AS::MutexLocker l(__instanceLock__);
-  if (!ASObjectIsEqual(_debugName, debugName)) {
-    _debugName = [debugName copy];
-  }
-}
 
 ASSynthesizeLockingMethodsWithMutex(__instanceLock__)
 
