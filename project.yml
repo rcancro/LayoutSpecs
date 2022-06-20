@@ -1,0 +1,14 @@
+name: LayoutSpecs
+
+targets:
+  LayoutSpecs:
+    name: LayoutSpecs
+    platform: iOS
+    type: application
+    sources:
+      - path: Source
+        name: App
+        includes:
+          - "**./*.h"
+          - "**./*.m"
+          - "**./*.mm"

@@ -1,3 +1,6 @@
+# OS X
+.DS_Store
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
@@ -66,3 +69,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# Xcodegen
+LayoutSpecs.xcodeproj
