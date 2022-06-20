@@ -146,11 +146,6 @@
   return [_childrenArray countByEnumeratingWithState:state objects:buffer count:len];
 }
 
-
-#pragma mark - ASLayoutElementStyleExtensibility
-
-ASLayoutElementStyleExtensibilityForwarding
-
 #pragma mark - Framework Private
 
 #if AS_DEDUPE_LAYOUT_SPEC_TREE

@@ -8,7 +8,6 @@
 //
 
 #import <AsyncDisplayKit/ASLayoutElementPrivate.h>
-#import <AsyncDisplayKit/ASLayoutElementExtensibility.h>
 #import <AsyncDisplayKit/ASDimensionInternal.h>
 #import <AsyncDisplayKit/ASStackLayoutElement.h>
 #import <AsyncDisplayKit/ASAbsoluteLayoutElement.h>
@@ -16,8 +15,6 @@
 
 @class ASLayout;
 @class ASLayoutSpec;
-@protocol ASLayoutElementStylability;
-
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -51,7 +48,7 @@ typedef NS_ENUM(unsigned char, ASLayoutElementType) {
  * access to the options via convenience properties. If you are creating custom layout spec, then you can
  * extend the backing layout options class to accommodate any new layout options.
  */
-@protocol ASLayoutElement <ASLayoutElementExtensibility>
+@protocol ASLayoutElement <NSObject>
 
 #pragma mark - Getter
 
@@ -164,7 +161,7 @@ ASDK_EXTERN NSString * const ASLayoutElementStyleLayoutPositionProperty;
 - (void)style:(__kindof ASLayoutElementStyle *)style propertyDidChange:(NSString *)propertyName;
 @end
 
-@interface ASLayoutElementStyle : NSObject <ASStackLayoutElement, ASAbsoluteLayoutElement, ASLayoutElementExtensibility, ASLocking>
+@interface ASLayoutElementStyle : NSObject <ASStackLayoutElement, ASAbsoluteLayoutElement, ASLocking>
 
 /**
  * @abstract Initializes the layoutElement style with a specified delegate

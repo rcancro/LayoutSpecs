@@ -137,8 +137,6 @@ do {\
 
 @implementation ASLayoutElementStyle {
   AS::RecursiveMutex __instanceLock__;
-  ASLayoutElementStyleExtensions _extensions;
-
   std::atomic<ASLayoutElementSize> _size;
   std::atomic<CGFloat> _spacingBefore;
   std::atomic<CGFloat> _spacingAfter;
@@ -491,56 +489,6 @@ ASSynthesizeLockingMethodsWithMutex(__instanceLock__)
 - (CGPoint)layoutPosition
 {
   return _layoutPosition.load();
-}
-
-#pragma mark - Extensions
-
-- (void)setLayoutOptionExtensionBool:(BOOL)value atIndex:(int)idx
-{
-  NSCAssert(idx < kMaxLayoutElementBoolExtensions, @"Setting index outside of max bool extensions space");
-  
-  MutexLocker l(__instanceLock__);
-  _extensions.boolExtensions[idx] = value;
-}
-
-- (BOOL)layoutOptionExtensionBoolAtIndex:(int)idx\
-{
-  NSCAssert(idx < kMaxLayoutElementBoolExtensions, @"Accessing index outside of max bool extensions space");
-  
-  MutexLocker l(__instanceLock__);
-  return _extensions.boolExtensions[idx];
-}
-
-- (void)setLayoutOptionExtensionInteger:(NSInteger)value atIndex:(int)idx
-{
-  NSCAssert(idx < kMaxLayoutElementStateIntegerExtensions, @"Setting index outside of max integer extensions space");
-  
-  MutexLocker l(__instanceLock__);
-  _extensions.integerExtensions[idx] = value;
-}
-
-- (NSInteger)layoutOptionExtensionIntegerAtIndex:(int)idx
-{
-  NSCAssert(idx < kMaxLayoutElementStateIntegerExtensions, @"Accessing index outside of max integer extensions space");
-  
-  MutexLocker l(__instanceLock__);
-  return _extensions.integerExtensions[idx];
-}
-
-- (void)setLayoutOptionExtensionEdgeInsets:(UIEdgeInsets)value atIndex:(int)idx
-{
-  NSCAssert(idx < kMaxLayoutElementStateEdgeInsetExtensions, @"Setting index outside of max edge insets extensions space");
-  
-  MutexLocker l(__instanceLock__);
-  _extensions.edgeInsetsExtensions[idx] = value;
-}
-
-- (UIEdgeInsets)layoutOptionExtensionEdgeInsetsAtIndex:(int)idx
-{
-  NSCAssert(idx < kMaxLayoutElementStateEdgeInsetExtensions, @"Accessing index outside of max edge insets extensions space");
-  
-  MutexLocker l(__instanceLock__);
-  return _extensions.edgeInsetsExtensions[idx];
 }
 
 - (void)propertyDidChange:(NSString *)propertyName
