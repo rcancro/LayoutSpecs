@@ -9,9 +9,8 @@
 
 #pragma once
 #import <UIKit/UIGeometry.h>
-#import <AsyncDisplayKit/ASAvailability.h>
-#import <AsyncDisplayKit/ASBaseDefines.h>
-#import <AsyncDisplayKit/ASAssert.h>
+#import "ASBaseDefines.h"
+#import "ASAssert.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

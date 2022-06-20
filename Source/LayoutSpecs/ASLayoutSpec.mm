@@ -8,13 +8,13 @@
 //
 
 #import "ASLayoutSpec.h"
-#import <AsyncDisplayKit/ASLayoutSpecPrivate.h>
+#import "ASLayoutSpecPrivate.h"
 
-#import <AsyncDisplayKit/ASLayoutSpec+Subclasses.h>
+#import "ASLayoutSpec+Subclasses.h"
 
-#import <AsyncDisplayKit/ASCollections.h>
-#import <AsyncDisplayKit/ASLayoutElementStylePrivate.h>
-#import <AsyncDisplayKit/ASEqualityHelpers.h>
+#import "ASCollections.h"
+#import "ASLayoutElementStylePrivate.h"
+#import "ASEqualityHelpers.h"
 
 @implementation ASLayoutSpec
 

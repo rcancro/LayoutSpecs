@@ -7,12 +7,12 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <AsyncDisplayKit/ASLayoutElementPrivate.h>
-#import <AsyncDisplayKit/ASDimensionInternal.h>
-#import <AsyncDisplayKit/ASStackLayoutElement.h>
-#import <AsyncDisplayKit/ASAbsoluteLayoutElement.h>
+#import "ASDimensionInternal.h"
+#import "ASStackLayoutElement.h"
+#import "ASAbsoluteLayoutElement.h"
 
 @class ASLayout;
+@class ASLayoutElementStyle;
 @class ASLayoutSpec;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -42,7 +42,6 @@ typedef NS_ENUM(unsigned char, ASLayoutElementType) {
  * options that can be used for specific layout specs. For example, ASStackLayoutSpec has options
  * defining how a layoutElement should shrink or grow based upon available space.
  *
- * These layout options are all stored in an ASLayoutOptions class (that is defined in ASLayoutElementPrivate).
  * Generally you needn't worry about the layout options class, as the layoutElement protocols allow all direct
  * access to the options via convenience properties. If you are creating custom layout spec, then you can
  * extend the backing layout options class to accommodate any new layout options.
