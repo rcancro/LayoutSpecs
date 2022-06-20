@@ -5,6 +5,8 @@ targets:
     name: LayoutSpecs
     platform: iOS
     type: application
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: dev.huynguyen.LayoutSpecs
     sources:
       - path: Source
         name: App
