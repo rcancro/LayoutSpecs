@@ -8,91 +8,12 @@
 //
 
 #import <AsyncDisplayKit/ASDisplayNode+FrameworkPrivate.h>
-#import <AsyncDisplayKit/ASThread.h>
 #import <AsyncDisplayKit/ASInternalHelpers.h>
 
-using AS::MutexLocker;
 
-#pragma mark - ASLayoutElementContext
-
-@implementation ASLayoutElementContext
-
-- (instancetype)init
-{
-  if (self = [super init]) {
-    _transitionID = ASLayoutElementContextDefaultTransitionID;
-  }
-  return self;
-}
-
-@end
 
 CGFloat const ASLayoutElementParentDimensionUndefined = NAN;
 CGSize const ASLayoutElementParentSizeUndefined = {ASLayoutElementParentDimensionUndefined, ASLayoutElementParentDimensionUndefined};
-
-int32_t const ASLayoutElementContextInvalidTransitionID = 0;
-int32_t const ASLayoutElementContextDefaultTransitionID = ASLayoutElementContextInvalidTransitionID + 1;
-
-#if AS_TLS_AVAILABLE
-
-static _Thread_local unowned ASLayoutElementContext *tls_context;
-
-void ASLayoutElementPushContext(ASLayoutElementContext *context)
-{
-  // NOTE: It would be easy to support nested contexts – just use an NSMutableArray here.
-  ASDisplayNodeCAssertNil(tls_context, @"Nested ASLayoutElementContexts aren't supported.");
-  
-  tls_context = (__bridge ASLayoutElementContext *)(__bridge_retained CFTypeRef)context;
-}
-
-ASLayoutElementContext *ASLayoutElementGetCurrentContext()
-{
-  // Don't retain here. Caller will retain if it wants to!
-  return tls_context;
-}
-
-void ASLayoutElementPopContext()
-{
-  ASDisplayNodeCAssertNotNil(tls_context, @"Attempt to pop context when there wasn't a context!");
-  CFRelease((__bridge CFTypeRef)tls_context);
-  tls_context = nil;
-}
-
-#else
-
-static pthread_key_t ASLayoutElementContextKey() {
-  static pthread_key_t k;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    pthread_key_create(&k, NULL);
-  });
-  return k;
-}
-void ASLayoutElementPushContext(ASLayoutElementContext *context)
-{
-  // NOTE: It would be easy to support nested contexts – just use an NSMutableArray here.
-  ASDisplayNodeCAssertNil(pthread_getspecific(ASLayoutElementContextKey()), @"Nested ASLayoutElementContexts aren't supported.");
-  
-  const auto cfCtx = (__bridge_retained CFTypeRef)context;
-  pthread_setspecific(ASLayoutElementContextKey(), cfCtx);
-}
-
-ASLayoutElementContext *ASLayoutElementGetCurrentContext()
-{
-  // Don't retain here. Caller will retain if it wants to!
-  const auto ctxPtr = pthread_getspecific(ASLayoutElementContextKey());
-  return (__bridge ASLayoutElementContext *)ctxPtr;
-}
-
-void ASLayoutElementPopContext()
-{
-  const auto ctx = (CFTypeRef)pthread_getspecific(ASLayoutElementContextKey());
-  ASDisplayNodeCAssertNotNil(ctx, @"Attempt to pop context when there wasn't a context!");
-  CFRelease(ctx);
-  pthread_setspecific(ASLayoutElementContextKey(), NULL);
-}
-
-#endif // AS_TLS_AVAILABLE
 
 #pragma mark - ASLayoutElementStyle
 
