@@ -30,7 +30,6 @@
   }
   
   _isMutable = YES;
-  _primitiveTraitCollection = ASPrimitiveTraitCollectionMakeDefault();
   _childrenArray = [[NSMutableArray alloc] init];
   
   return self;
@@ -147,25 +146,6 @@
   return [_childrenArray countByEnumeratingWithState:state objects:buffer count:len];
 }
 
-#pragma mark - ASTraitEnvironment
-
-- (ASTraitCollection *)asyncTraitCollection
-{
-  AS::MutexLocker l(__instanceLock__);
-  return [ASTraitCollection traitCollectionWithASPrimitiveTraitCollection:self.primitiveTraitCollection];
-}
-
-- (ASPrimitiveTraitCollection)primitiveTraitCollection
-{
-  AS::MutexLocker l(__instanceLock__);
-  return _primitiveTraitCollection;
-}
-
-- (void)setPrimitiveTraitCollection:(ASPrimitiveTraitCollection)traitCollection
-{
-  AS::MutexLocker l(__instanceLock__);
-  _primitiveTraitCollection = traitCollection;
-}
 
 #pragma mark - ASLayoutElementStyleExtensibility
 
