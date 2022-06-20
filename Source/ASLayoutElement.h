@@ -11,7 +11,6 @@
 #import <AsyncDisplayKit/ASDimensionInternal.h>
 #import <AsyncDisplayKit/ASStackLayoutElement.h>
 #import <AsyncDisplayKit/ASAbsoluteLayoutElement.h>
-#import <AsyncDisplayKit/ASLocking.h>
 
 @class ASLayout;
 @class ASLayoutSpec;
@@ -161,7 +160,7 @@ ASDK_EXTERN NSString * const ASLayoutElementStyleLayoutPositionProperty;
 - (void)style:(__kindof ASLayoutElementStyle *)style propertyDidChange:(NSString *)propertyName;
 @end
 
-@interface ASLayoutElementStyle : NSObject <ASStackLayoutElement, ASAbsoluteLayoutElement, ASLocking>
+@interface ASLayoutElementStyle : NSObject <ASStackLayoutElement, ASAbsoluteLayoutElement>
 
 /**
  * @abstract Initializes the layoutElement style with a specified delegate

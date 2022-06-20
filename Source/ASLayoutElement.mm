@@ -38,7 +38,6 @@ NSString * const ASLayoutElementStyleLayoutPositionProperty = @"ASLayoutElementS
 
 #define ASLayoutElementStyleSetSizeWithScope(x)                                    \
   ({                                                                               \
-    __instanceLock__.lock();                                                       \
     const ASLayoutElementSize oldSize = _size.load();                              \
     ASLayoutElementSize newSize = oldSize;                                         \
     {x};                                                                           \
@@ -46,7 +45,6 @@ NSString * const ASLayoutElementStyleLayoutPositionProperty = @"ASLayoutElementS
     if (changed) {                                                                 \
       _size.store(newSize);                                                        \
     }                                                                              \
-    __instanceLock__.unlock();                                                     \
     changed;                                                                       \
   })
 
@@ -57,7 +55,6 @@ do {\
 } while(0)
 
 @implementation ASLayoutElementStyle {
-  AS::RecursiveMutex __instanceLock__;
   std::atomic<ASLayoutElementSize> _size;
   std::atomic<CGFloat> _spacingBefore;
   std::atomic<CGFloat> _spacingAfter;
@@ -93,8 +90,6 @@ do {\
   }
   return self;
 }
-
-ASSynthesizeLockingMethodsWithMutex(__instanceLock__)
 
 #pragma mark - ASLayoutElementStyleSize
 

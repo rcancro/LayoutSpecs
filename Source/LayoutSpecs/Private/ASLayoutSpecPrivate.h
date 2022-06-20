@@ -7,9 +7,6 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <AsyncDisplayKit/ASInternalHelpers.h>
-#import <AsyncDisplayKit/ASThread.h>
-
 #if DEBUG
   #define AS_DEDUPE_LAYOUT_SPEC_TREE 1
 #else
@@ -19,7 +16,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ASLayoutSpec() {
-  AS::RecursiveMutex __instanceLock__;
   ASLayoutElementStyle *_style;
   NSMutableArray *_childrenArray;
 }

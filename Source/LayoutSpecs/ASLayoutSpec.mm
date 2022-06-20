@@ -54,7 +54,6 @@
 
 - (ASLayoutElementStyle *)style
 {
-  AS::MutexLocker l(__instanceLock__);
   if (_style == nil) {
     _style = [[ASLayoutElementStyle alloc] init];
   }
@@ -192,8 +191,6 @@
   }
 }
 #endif
-
-ASSynthesizeLockingMethodsWithMutex(__instanceLock__)
 
 @end
 
