@@ -70,7 +70,23 @@
 
 #pragma mark - Layout
 
-ASLayoutElementLayoutCalculationDefaults
+- (ASLayout *)layoutThatFits:(ASSizeRange)constrainedSize\
+{
+  return [self layoutThatFits:constrainedSize parentSize:constrainedSize.max];
+}
+
+- (ASLayout *)layoutThatFits:(ASSizeRange)constrainedSize parentSize:(CGSize)parentSize
+{
+  return [self calculateLayoutThatFits:constrainedSize restrictedToSize:self.style.size relativeToParentSize:parentSize];
+}
+
+- (ASLayout *)calculateLayoutThatFits:(ASSizeRange)constrainedSize
+                     restrictedToSize:(ASLayoutElementSize)size
+                 relativeToParentSize:(CGSize)parentSize
+{
+  const ASSizeRange resolvedRange = ASSizeRangeIntersect(constrainedSize, ASLayoutElementSizeResolve(self.style.size, parentSize));
+  return [self calculateLayoutThatFits:resolvedRange];
+}
 
 - (ASLayout *)calculateLayoutThatFits:(ASSizeRange)constrainedSize
 {
