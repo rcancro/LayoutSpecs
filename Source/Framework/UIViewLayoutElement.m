@@ -23,7 +23,10 @@
     return self;
 }
 
-@synthesize layoutElementType;
+- (ASLayoutElementType)layoutElementType
+{
+  return ASLayoutElementTypeContent;
+}
 
 @synthesize style;
 

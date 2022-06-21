@@ -43,9 +43,9 @@ ASDISPLAYNODE_INLINE AS_WARN_UNUSED_RESULT NSString * descriptionIndents(NSUInte
   return description;
 }
 
-ASDISPLAYNODE_INLINE AS_WARN_UNUSED_RESULT BOOL ASLayoutIsDisplayNodeType(ASLayout *layout)
+ASDISPLAYNODE_INLINE AS_WARN_UNUSED_RESULT BOOL ASLayoutIsContentType(ASLayout *layout)
 {
-  return layout.type == ASLayoutElementTypeDisplayNode;
+  return layout.type == ASLayoutElementTypeContent;
 }
 
 @interface ASLayout ()
@@ -176,13 +176,13 @@ static std::atomic_bool static_retainsSublayoutLayoutElements = ATOMIC_VAR_INIT(
 
 - (BOOL)isFlattened
 {
-  // A layout is flattened if its position is null, and all of its sublayouts are of type displaynode with no sublayouts.
+  // A layout is flattened if its position is null, and all of its sublayouts are of type content with no sublayouts.
   if (!ASPointIsNull(_position)) {
     return NO;
   }
   
   for (ASLayout *sublayout in _sublayouts) {
-    if (ASLayoutIsDisplayNodeType(sublayout) == NO || sublayout->_sublayouts.count > 0) {
+    if (ASLayoutIsContentType(sublayout) == NO || sublayout->_sublayouts.count > 0) {
       return NO;
     }
   }
@@ -190,7 +190,7 @@ static std::atomic_bool static_retainsSublayoutLayoutElements = ATOMIC_VAR_INIT(
   return YES;
 }
 
-- (ASLayout *)filteredNodeLayoutTree NS_RETURNS_RETAINED
+- (ASLayout *)filteredContentLayoutTree NS_RETURNS_RETAINED
 {
   if ([self isFlattened]) {
     // All flattened layouts must retain sublayout elements until they are applied.
@@ -220,7 +220,7 @@ static std::atomic_bool static_retainsSublayoutLayoutElements = ATOMIC_VAR_INIT(
     const NSUInteger sublayoutsCount = layout->_sublayouts.count;
     const CGPoint absolutePosition = context.absolutePosition;
     
-    if (ASLayoutIsDisplayNodeType(layout)) {
+    if (ASLayoutIsContentType(layout)) {
       if (sublayoutsCount > 0 || CGPointEqualToPoint(ASCeilPointValues(absolutePosition), layout.position) == NO) {
         // Only create a new layout if the existing one can't be reused, which means it has either some sublayouts or an invalid absolute position.
         const auto newLayout = [ASLayout layoutWithLayoutElement:layout->_layoutElement

@@ -126,9 +126,9 @@ ASDK_EXTERN ASLayout *ASCalculateLayout(id<ASLayoutElement>layoutElement, const 
                                    size:(CGSize)size NS_RETURNS_RETAINED AS_WARN_UNUSED_RESULT;
 
 /**
- * Traverses the existing layout tree and generates a new tree that represents only ASDisplayNode layouts
+ * Traverses the existing layout tree and generates a new tree that represents only content layouts
  */
-- (ASLayout *)filteredNodeLayoutTree NS_RETURNS_RETAINED AS_WARN_UNUSED_RESULT;
+- (ASLayout *)filteredContentLayoutTree NS_RETURNS_RETAINED AS_WARN_UNUSED_RESULT;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)new NS_UNAVAILABLE;

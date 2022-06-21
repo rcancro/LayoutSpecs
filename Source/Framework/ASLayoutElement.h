@@ -26,7 +26,7 @@ ASDK_EXTERN CGSize const ASLayoutElementParentSizeUndefined;
 /** Type of ASLayoutElement  */
 typedef NS_ENUM(unsigned char, ASLayoutElementType) {
   ASLayoutElementTypeLayoutSpec,
-  ASLayoutElementTypeDisplayNode
+  ASLayoutElementTypeContent
 };
 
 #pragma mark - ASLayoutElement
