@@ -47,9 +47,9 @@
     UIView *view = [[UIView alloc] init];
     view.backgroundColor = UIColor.whiteColor;
 
+    [view addSubview:self.backgroundView];
     [view addSubview:self.label];
     [view addSubview:self.button];
-    [view addSubview:self.backgroundView];
     
     self.view = view;
 }
@@ -70,11 +70,20 @@
     
     ASSizeRange sizeRange = ASSizeRangeMake(self.view.bounds.size);
     ASLayout *layout = [backgroundSpec layoutThatFits:sizeRange];
-    ASLayout *sublayout1 = layout.sublayouts[0];
-    ASLayout *sublayout2 = layout.sublayouts[1];
-    ASLayout *sublayout3 = layout.sublayouts[1].sublayouts[0];
-    ASLayout *sublayout4 = layout.sublayouts[1].sublayouts[1];
-    NSLog(@"Layout: %@", NSStringFromCGSize(layout.size));
+    layout = [layout filteredContentLayoutTree];
+    
+    self.view.frame = CGRectMake(0, 0, layout.size.width, layout.size.height);
+    
+    for (UIViewLayoutElement *element in @[labelElement, buttonElement, backgroundElement]) {
+      CGRect frame = [layout frameForElement:element];
+      if (CGRectIsNull(frame)) {
+        // There is no frame for this element in our layout.
+        // This currently can happen if we get a CA layout pass
+        // while waiting for the client to run animateLayoutTransition:
+      } else {
+        element.view.frame = frame;
+      }
+    }
 }
 
 @end
