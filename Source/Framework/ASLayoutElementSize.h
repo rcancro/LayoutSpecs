@@ -1,5 +1,5 @@
 //
-//  ASDimensionInternal.h
+//  ASLayoutElementSize.h
 //  Texture
 //
 //  Copyright (c) Facebook, Inc. and its affiliates.  All rights reserved.
