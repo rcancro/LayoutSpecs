@@ -67,10 +67,6 @@
     return [self calculateLayoutThatFits:resolvedRange];
 }
 
-- (BOOL)implementsLayoutMethod {
-    return YES;
-}
-
 - (nonnull ASLayout *)layoutThatFits:(ASSizeRange)constrainedSize {
     return [self layoutThatFits:constrainedSize parentSize:constrainedSize.max];
 }

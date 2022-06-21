@@ -130,8 +130,6 @@ typedef NS_ENUM(unsigned char, ASLayoutElementType) {
                      restrictedToSize:(ASLayoutElementSize)size
                  relativeToParentSize:(CGSize)parentSize;
 
-- (BOOL)implementsLayoutMethod;
-
 @end
 
 #pragma mark - ASLayoutElementStyle
