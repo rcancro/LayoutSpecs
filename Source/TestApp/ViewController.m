@@ -61,7 +61,7 @@
     UIViewLayoutElement *backgroundElement = [[UIViewLayoutElement alloc] initWithView:self.backgroundView];
     
     ASStackLayoutSpec *stackSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
-                                                                           spacing:0
+                                                                           spacing:100
                                                                     justifyContent:ASStackLayoutJustifyContentCenter
                                                                         alignItems:ASStackLayoutAlignItemsCenter
                                                                           children:@[ labelElement, buttonElement ]];
@@ -74,7 +74,7 @@
     
     self.view.frame = CGRectMake(0, 0, layout.size.width, layout.size.height);
     
-    for (UIViewLayoutElement *element in @[labelElement, buttonElement, backgroundElement]) {
+    for (UIViewLayoutElement *element in @[ labelElement, buttonElement, backgroundElement ]) {
       CGRect frame = [layout frameForElement:element];
       if (CGRectIsNull(frame)) {
         // There is no frame for this element in our layout.
