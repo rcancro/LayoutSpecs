@@ -14,6 +14,8 @@
 
 @implementation UIViewLayoutElement
 
+@synthesize style = _style;
+
 - (instancetype)initWithView:(UIView *)view
 {
     self = [super init];
@@ -28,7 +30,31 @@
   return ASLayoutElementTypeContent;
 }
 
-@synthesize style;
+#pragma mark - Style
+
+- (ASLayoutElementStyle *)style
+{
+  if (_style == nil) {
+    _style = [[ASLayoutElementStyle alloc] init];
+  }
+  return _style;
+}
+
+- (instancetype)styledWithBlock:(AS_NOESCAPE void (^)(__kindof ASLayoutElementStyle *style))styleBlock
+{
+  styleBlock(self.style);
+  return self;
+}
+
+#pragma mark Children
+
+- (nullable NSArray<id<ASLayoutElement>> *)sublayoutElements
+{
+    // TODO: return subview elements here?
+    return nil;
+}
+
+#pragma mark - Layout
 
 - (nonnull ASLayout *)calculateLayoutThatFits:(ASSizeRange)constrainedSize {
     CGSize intrinsicSize = [self.view sizeThatFits:constrainedSize.max];
@@ -51,10 +77,6 @@
 
 - (nonnull ASLayout *)layoutThatFits:(ASSizeRange)constrainedSize parentSize:(CGSize)parentSize {
     return [self calculateLayoutThatFits:constrainedSize restrictedToSize:self.style.size relativeToParentSize:parentSize];
-}
-
-- (nullable NSArray<id<ASLayoutElement>> *)sublayoutElements {
-    return nil;
 }
 
 @end
