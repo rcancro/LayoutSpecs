@@ -1,15 +1,40 @@
 name: LayoutSpecs
 
 targets:
+  App:
+    name: TestApp
+    platform: iOS
+    type: application
+    info:
+      path: Source/TestApp/Info.plist
+      properties:
+        UILaunchStoryboardName: LaunchScreen
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: dev.huynguyen.TestApp
+    sources:
+      - path: Source/TestApp
+        name: TestApp
+        includes:
+          - "**./*.h"
+          - "**./*.m"
+          - "**./*.mm"
+      - path: Source/TestApp/Base.lproj
+        type: folder
+      - path: Source/TestApp/Assets.xcassets
+        type: folder
+    dependencies:
+      - target: LayoutSpecs
   LayoutSpecs:
     name: LayoutSpecs
     platform: iOS
-    type: application
+    type: framework
+    info:
+      path: Source/TestApp/Info.plist
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: dev.huynguyen.LayoutSpecs
     sources:
-      - path: Source
-        name: App
+      - path: Source/Framework
+        name: Framework
         includes:
           - "**./*.h"
           - "**./*.m"
