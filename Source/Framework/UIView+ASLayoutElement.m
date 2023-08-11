@@ -1,29 +1,19 @@
 //
-//  UIViewLayoutElement.m
+//  UIView+ASLayoutElement.m
 //  LayoutSpecs
 //
-//  Created by Huy Nguyen on 6/20/22.
+//  Created by Ricky Cancro on 8/11/23.
 //
 
-#import "UIViewLayoutElement.h"
+#import "UIView+ASLayoutElement.h"
 
-#import <CoreGraphics/CoreGraphics.h>
+#import <objc/runtime.h>
 
 #import "ASLayout.h"
 #import "ASLayoutElementStylePrivate.h"
 
-@implementation UIViewLayoutElement
-
-@synthesize style = _style;
-
-- (instancetype)initWithView:(UIView *)view
-{
-    self = [super init];
-    if (self) {
-        _view = view;
-    }
-    return self;
-}
+@implementation UIView (ASLayoutElement)
+@dynamic style;
 
 - (ASLayoutElementType)layoutElementType
 {
@@ -32,12 +22,19 @@
 
 #pragma mark - Style
 
+- (void)setStyle:(ASLayoutElementStyle *)style
+{
+     objc_setAssociatedObject(self, @selector(style), style, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (ASLayoutElementStyle *)style
 {
-  if (_style == nil) {
-    _style = [[ASLayoutElementStyle alloc] init];
-  }
-  return _style;
+    ASLayoutElementStyle *style = objc_getAssociatedObject(self, @selector(style));
+    if (style == nil) {
+        style = [[ASLayoutElementStyle alloc] init];
+        [self setStyle:style];
+    }
+    return style;
 }
 
 - (instancetype)styledWithBlock:(AS_NOESCAPE void (^)(__kindof ASLayoutElementStyle *style))styleBlock
@@ -50,14 +47,13 @@
 
 - (nullable NSArray<id<ASLayoutElement>> *)sublayoutElements
 {
-    // TODO: return subview elements here?
-    return nil;
+    return [self subviews];
 }
 
 #pragma mark - Layout
 
 - (nonnull ASLayout *)calculateLayoutThatFits:(ASSizeRange)constrainedSize {
-    CGSize intrinsicSize = [self.view sizeThatFits:constrainedSize.max];
+    CGSize intrinsicSize = [self sizeThatFits:constrainedSize.max];
     CGSize finalSize = ASSizeRangeClamp(constrainedSize, intrinsicSize);
     return [ASLayout layoutWithLayoutElement:self size:finalSize];
 }

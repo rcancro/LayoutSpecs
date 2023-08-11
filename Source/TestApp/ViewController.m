@@ -9,22 +9,52 @@
 
 #import <LayoutSpecs/ASBackgroundLayoutSpec.h>
 #import <LayoutSpecs/ASStackLayoutSpec.h>
-#import <LayoutSpecs/UIViewLayoutElement.h>
+#import <LayoutSpecs/ASInsetLayoutSpec.h>
 #import <LayoutSpecs/ASLayout.h>
+#import <LayoutSpecs/ASLayoutView.h>
+#import <LayoutSpecs/UIView+ASLayoutElement.h>
 
-@interface ViewController ()
-
+@interface HelloView: ASLayoutView
+@property (nonatomic) UIImageView *imageView;
 @property (nonatomic) UILabel *label;
-@property (nonatomic) UIButton *button;
-@property (nonatomic) UIView *backgroundView;
+@end
+
+@implementation HelloView
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _imageView = [[UIImageView alloc] initWithImage:[UIImage systemImageNamed:@"hand.wave"]];
+        _label = [[UILabel alloc] init];
+        _label.text = @"hello!";
+        
+        [self addSubview:self.imageView];
+        [self addSubview:self.label];
+    }
+    return self;
+}
+
+- (id<ASLayoutElement>)layoutSpecThatFits:(ASSizeRange)constrainedSize
+{
+    ASStackLayoutSpec *stackSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
+                                                                           spacing:12
+                                                                    justifyContent:ASStackLayoutJustifyContentCenter
+                                                                        alignItems:ASStackLayoutAlignItemsCenter
+                                                                          children:@[ self.imageView, self.label ]];
+    return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 16, 0, 16) child:stackSpec];
+}
 
 @end
 
-@implementation ViewController
+@interface ContentView()
+@property (nonatomic) HelloView *helloView;
+@property (nonatomic) UILabel *label;
+@property (nonatomic) UIButton *button;
+@property (nonatomic) UIView *backgroundView;
+@end
 
-@synthesize label;
-@synthesize button;
-@synthesize backgroundView;
+@implementation ContentView
 
 - (instancetype)init
 {
@@ -37,53 +67,43 @@
         [self.button setTitle:@"Button" forState:UIControlStateNormal];
         
         self.backgroundView = [[UIView alloc] init];
-        self.backgroundView.backgroundColor = UIColor.redColor;
+        self.backgroundView.backgroundColor = UIColor.systemGray3Color;
+        
+        self.helloView = [[HelloView alloc] init];
+        
+        [self addSubview:self.backgroundView];
+        [self addSubview:self.label];
+        [self addSubview:self.button];
+        [self addSubview:self.helloView];
+        self.backgroundColor = UIColor.whiteColor;
     }
     return self;
 }
 
-- (void)loadView
+- (id<ASLayoutElement>)layoutSpecThatFits:(ASSizeRange)constrainedSize
 {
-    UIView *view = [[UIView alloc] init];
-    view.backgroundColor = UIColor.whiteColor;
-
-    [view addSubview:self.backgroundView];
-    [view addSubview:self.label];
-    [view addSubview:self.button];
-    
-    self.view = view;
-}
-
-- (void)viewWillLayoutSubviews
-{
-    UIViewLayoutElement *labelElement = [[UIViewLayoutElement alloc] initWithView:self.label];
-    UIViewLayoutElement *buttonElement = [[UIViewLayoutElement alloc] initWithView:self.button];
-    UIViewLayoutElement *backgroundElement = [[UIViewLayoutElement alloc] initWithView:self.backgroundView];
-    
     ASStackLayoutSpec *stackSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionVertical
-                                                                           spacing:100
+                                                                           spacing:50
                                                                     justifyContent:ASStackLayoutJustifyContentCenter
                                                                         alignItems:ASStackLayoutAlignItemsCenter
-                                                                          children:@[ labelElement, buttonElement ]];
+                                                                          children:@[ self.helloView, self.label, self.button ]];
     ASBackgroundLayoutSpec *backgroundSpec = [ASBackgroundLayoutSpec backgroundLayoutSpecWithChild:stackSpec
-                                                                                        background:backgroundElement];
-    
-    ASSizeRange sizeRange = ASSizeRangeMake(self.view.bounds.size);
-    ASLayout *layout = [backgroundSpec layoutThatFits:sizeRange];
-    layout = [layout filteredContentLayoutTree];
-    
-    self.view.frame = CGRectMake(0, 0, layout.size.width, layout.size.height);
-    
-    for (UIViewLayoutElement *element in @[ labelElement, buttonElement, backgroundElement ]) {
-      CGRect frame = [layout frameForElement:element];
-      if (CGRectIsNull(frame)) {
-        // There is no frame for this element in our layout.
-        // This currently can happen if we get a CA layout pass
-        // while waiting for the client to run animateLayoutTransition:
-      } else {
-        element.view.frame = frame;
-      }
-    }
+                                                                                        background:self.backgroundView];
+    return backgroundSpec;
 }
+
+@end
+
+@implementation ViewController
+
+- (instancetype)init
+{
+    self = [super initWithView:[[ContentView alloc] init]];
+    if (self) {
+    }
+    return self;
+}
+
+
 
 @end

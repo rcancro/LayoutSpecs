@@ -6,8 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <LayoutSpecs/ASLayoutView.h>
+#import <LayoutSpecs/ASLayoutViewController.h>
 
-@interface ViewController : UIViewController
+@interface ContentView: ASLayoutView
+@end
+
+@interface ViewController : ASLayoutViewController<ContentView *>
 
 
 @end
